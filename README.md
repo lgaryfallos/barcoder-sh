@@ -40,13 +40,13 @@ Arguments:
 $ cd movie_directory
 $ /path/to/barcoder.sh -f moviename.avi -i 90 -s 3
 ```
-*Snap every 2 seconds, and preserve intermediate files
+*Snap every 2 seconds, and preserve intermediate files*
 ```sh
 $ cd movie_directory
 $ /path/to/barcoder.sh -f videofile.mkv -i 2 -p
 ```
 
-*Custom output fileprefix
+*Custom output fileprefix*
 ```sh
 $ cd movie_directory
 $ /path/to/barcoder.sh -f videofile.mkv -o mymoviebarcode
