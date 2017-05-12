@@ -1,9 +1,9 @@
 #!/bin/bash
 ##############################################################################
-# extract frames from movie $1 every $2 seconds
-# resize them to $3 pixels wide
+# extract frames from movie [-f filename] every [-i XX] seconds
+# resize them to [-s XX] pixels wide
 # montage them side by side - save as barcode_raw.png
-# resize 1px height, then resize to 1080 again and save as barcode_smooth.png
+# resize 1px height, then resize to [-H XXXX] again and save as barcode_smooth.png
 ##############################################################################
 # Author: leonidas@mokaal.com
 # Version: 0.3 11-05-2017
