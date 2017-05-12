@@ -60,13 +60,14 @@ while getopts "f:i:s:w:H:pho:" flag ; do
 		;;
 	h) 
 		echo "BARCODER ::: Creates 'barcode' like images from movie files."
-		echo "Usage: barcoder.sh -f filename [-h] [-H height_in_pixels] [-s slice_width_pixels] [-i screenshot_interval_seconds] [-p]"
+		echo "Usage: barcoder.sh -f filename [-h] [-H height_in_pixels] [-s slice_width_pixels] [-i screenshot_interval_seconds] [-p] [-o output_prefix]"
 		echo " -p : Preserves still frames and narrow resized frames."
 		echo " -h : Prints this message and exits. "
 		echo ""
 		echo " If only -f is set (which is required), the defaults are:"
-		echo " > Screenshot every 4 seconds, "
-		echo " > 1080 pixels height "
+		echo " > Default output prefix is barcode."
+		echo " > Screenshot every 4 seconds. "
+		echo " > 1080 pixels height. "
 		echo " > 1 pixel slice width. "
 		echo " > Intermediate images are deleted by default."
 		echo ""
@@ -127,14 +128,4 @@ echo "Your barcodes are ready. "
 echo " "
 
 
-function confirm {
-    read -r -p "${1:-Are you sure? [y/N]} " response
-    case "$response" in
-        [yY][eE][sS]|[yY]) 
-            true
-            ;;
-        *)
-            false
-            ;;
-    esac
-}
+
