@@ -30,6 +30,7 @@ Arguments:
  - -H XX : *height of output in pixels (default 1080)*
  - -s XX : *width of slice in pixels (default 1)*
  - -p : *If set preserves frames and slices which are otherwise deleted*
+ - -o : *Set output prefix (default: barcode)*
  - -h : *Prints a semihelpful help message*
 
 ### Example
@@ -45,7 +46,14 @@ $ cd movie_directory
 $ /path/to/barcoder.sh -f videofile.mkv -i 2 -p
 ```
 
-The script will create 2 folders "narrow" and "frames" where the slices and the full frames will be stored respectively. You can delete them afterwards, I just left them if anyone wants to play with them.
+*Custom output fileprefix
+```sh
+$ cd movie_directory
+$ /path/to/barcoder.sh -f videofile.mkv -o mymoviebarcode
+```
+*(will create mymoviebarcode_raw.png and mymoviebarcode_smooth.png instead of barcode_raw and _smooth)*
+
+The script will create 2 folders "narrow" and "frames" where the slices and the full frames will be stored respectively. These are deleted (so make sure you do this in a clean folder to avoid unpleasant surprises) unless you specify the -p option to preserve them.
 
 The barcode will be barcode_raw.png for the unsmoothed version and barcode_smooth.png for the smooth version (which has been squashed and resized again).
 
@@ -58,10 +66,12 @@ The barcode will be barcode_raw.png for the unsmoothed version and barcode_smoot
 
 License
 ----
-I don't think it's needed, but in any case, do whatever you want with it :)
+I don't think it's needed, but in any case, do whatever you want with it, so 
 **MIT**
 
 I made this for my very talented cinematographer friend [Yiannis Manolopoulos](http://www.yiannismanolopoulos.com/).
+
 We started with the montage of the images, and then I thought, this should be really easy to automate. And as it turns out, it was :)
+
 **Free Software, Hell Yeah!**
 

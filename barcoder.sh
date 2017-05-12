@@ -16,17 +16,19 @@ slice=1
 interval=4
 file=''
 preserve=false
+output="barcode"
+cont=false
 
 
 if [ $# -lt 1 ]
 	then
 	echo ""
-	echo "Usage: barcoder.sh {-f path/to/filename} [-i grab_frame_every_seconds] [-s frame_resize_width] [-H output_height_pixels] [-p]"
+	echo "Usage: barcoder.sh {-f path/to/filename} [-i grab_frame_every_seconds] [-s frame_resize_width] [-H output_height_pixels] [-p] [-h] [-o output_prefix]"
 	echo ""
 	exit 1;
 fi
 echo " "
-while getopts "f:i:s:w:H:ph" flag ; do
+while getopts "f:i:s:w:H:pho:" flag ; do
   case "$flag" in
   	f) 
 		echo "* File is $OPTARG"
@@ -52,6 +54,10 @@ while getopts "f:i:s:w:H:ph" flag ; do
 		echo "* Preserving intermediate files"
 		preserve=true
 		;;
+	o) 
+		echo "* Output prefix is $OPTARG"
+		output="${OPTARG}"
+		;;
 	h) 
 		echo "BARCODER ::: Creates 'barcode' like images from movie files."
 		echo "Usage: barcoder.sh -f filename [-h] [-H height_in_pixels] [-s slice_width_pixels] [-i screenshot_interval_seconds] [-p]"
@@ -68,7 +74,7 @@ while getopts "f:i:s:w:H:ph" flag ; do
 		echo ""
 		exit 1;
 		;;
-    *) error "Unexpected option ${flag}" ;;
+    *) echo "Unexpected option ${flag}"; exit 1 ;;
   esac
   
 done
@@ -76,8 +82,20 @@ done
 shift $(( OPTIND - 1 ))
 
 echo "...."
-echo "Options set and starting"
+echo "Options set"
 echo "...."
+# confirm user wants to go on
+read -r -p ">>> Are we good to go? [y/N] " response
+case "$response" in
+    [yY][eE][sS]|[yY]) 
+        cont=true
+        ;;
+    *)
+        exit 1
+        ;;
+esac
+
+
 
 echo "Extracting frames every $interval seconds..."
 mkdir frames
@@ -88,14 +106,14 @@ echo "Resizing to $slice pixels wide..."
 mogrify -resize "$slice"x$height! -quality 100 -path ../narrow *.jpg
 cd ../narrow
 echo "Stitching side by side..."
-convert +append *.jpg ../barcode_raw.png
+convert +append *.jpg ../"$output"_raw.png
 #montage -geometry +0+0 -tile x1 *.jpg ../barcode_raw2.png
 cd ..
 echo "Squashing barcode to smooth it out..."
 convert barcode_raw.png -geometry x1! temp.png
 
 echo "Resizing to 1080 height..."
-convert temp.png -geometry x$height! barcode_smooth.png
+convert temp.png -geometry x$height! "$output"_smooth.png
 
 echo "Removing temp file..."
 rm temp.png
@@ -106,4 +124,17 @@ if !($preserve); then
 fi
 
 echo "Your barcodes are ready. "
-echo "barcode_raw.png is the original and barcode_smooth.png is... smooooth!"
+echo " "
+
+
+function confirm {
+    read -r -p "${1:-Are you sure? [y/N]} " response
+    case "$response" in
+        [yY][eE][sS]|[yY]) 
+            true
+            ;;
+        *)
+            false
+            ;;
+    esac
+}
